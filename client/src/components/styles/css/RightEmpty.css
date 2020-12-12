@@ -1,0 +1,26 @@
+.right-empty {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  background-image: url("../../../assets/images/cb2.svg");
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  place-items: center;
+}
+
+.right-empty h2 {
+  font-weight: 400;
+}
+
+.right-empty .info h4 {
+  font-weight: 400;
+}
+/*# sourceMappingURL=RightEmpty.css.map */

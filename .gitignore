@@ -1,0 +1,5 @@
+client/node_modules
+client/.vscode
+server/node_modules
+server/.vscode
+server/serviceAccountKey.json.
