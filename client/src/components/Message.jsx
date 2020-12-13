@@ -13,11 +13,7 @@ function Message(props) {
     let time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     setTime(time);
-  }, []);
-
-  React.useEffect(() => {
-    console.log(time);
-  }, [time]);
+  }, [props.time]);
 
   return (
     <div className={`message ${props.type}`}>

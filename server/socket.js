@@ -9,23 +9,21 @@ function connect(server) {
   const io = _socket(server, { cors: { origins: "*:*" } });
 
   io.on("connection", (socket) => {
-    console.log("[CONN] User Conected with id", socket.id);
     socket.on("disconnect", () => {
-      console.log(
-        "[DISCONN] User disconnected with id",
-        socket.id,
-        id_users[socket.id]
-      );
-      const temp = id_users[socket.id];
-      delete users[temp];
-      userNames.splice(userNames.indexOf(temp), 1);
-      delete id_users[socket.id];
+      if (id_users[socket.id]) {
+        console.log("[DISCONN] User disconnected with id", id_users[socket.id]);
+        const temp = id_users[socket.id];
+        delete users[temp];
+        userNames.splice(userNames.indexOf(temp), 1);
+        delete id_users[socket.id];
+      }
     });
 
     socket.on("joined", (data) => {
       users[data.name] = socket.id;
       id_users[socket.id] = data.name;
       userNames.push(data.name);
+      console.log("[CONNECTION]", data.name, "joined");
       socket.emit("joined-confirm", { status: "success" });
     });
 
@@ -38,8 +36,6 @@ function connect(server) {
           from: from,
           time: data.time,
         });
-      } else {
-        console.log("not-connected");
       }
 
       await newMessage(from, data.to, data.msg, data.time, "sent");

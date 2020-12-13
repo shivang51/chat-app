@@ -8,6 +8,8 @@ const {
   checkUser,
   getContacts,
   setNewContact,
+  getChat,
+  getLatest,
 } = require("./firebase");
 const connect = require("./socket");
 
@@ -71,6 +73,13 @@ app.post("/newcontact", async (req, res) => {
   } else {
     res.send("not-registered");
   }
+});
+
+app.post("/getchat", (req, res) => {
+  const uid = req.body.uid;
+  const cid = req.body.cid;
+  const date = req.body.date;
+  getChat(uid, cid, date).then((chat) => res.send(chat));
 });
 
 const port = process.env.PORT || 8080;

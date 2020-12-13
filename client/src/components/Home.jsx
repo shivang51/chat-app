@@ -202,6 +202,36 @@ function Home(props) {
     }
   }, [socket, uinfo, connected]);
 
+  React.useEffect(async () => {
+    async function fetchData() {
+      for (let contact of contacts) {
+        const res = await axios.post("http://localhost:8080/getchat", {
+          cid: contact.id,
+          uid: uinfo.uid,
+          date: "latest",
+        });
+
+        res.data.forEach((v) => {
+          setMessages((preMsgs) => {
+            if (preMsgs[contact.id])
+              return {
+                ...preMsgs,
+                [contact.id]: [...preMsgs[contact.id], v],
+              };
+            else
+              return {
+                ...preMsgs,
+                [contact.id]: [v],
+              };
+          });
+        });
+      }
+    }
+    if (contacts && messages.length === 0) {
+      fetchData();
+    }
+  }, [contacts, uinfo, messages]);
+
   return (
     <div className="home">
       {props.isLogedIn ? (
@@ -272,16 +302,18 @@ function Home(props) {
 
                 <div className="message-container">
                   {messages[activeInfo.id]
-                    ? messages[activeInfo.id].map((m, i) => {
-                        return (
-                          <Message
-                            key={i}
-                            type={m.type}
-                            message={m.msg}
-                            time={m.time}
-                          />
-                        );
-                      })
+                    ? messages[activeInfo.id]
+                        .sort((a, b) => new Date(a.time) - new Date(b.time))
+                        .map((m, i) => {
+                          return (
+                            <Message
+                              key={i}
+                              type={m.type}
+                              message={m.msg}
+                              time={m.time}
+                            />
+                          );
+                        })
                     : null}
                 </div>
 
